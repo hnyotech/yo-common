@@ -230,6 +230,34 @@ import store from '@/store'
       callback()
     }
   }
+
+  // 验证 数字可以是正数,负数和0, 且最多为两位小数
+  astec.twoDecimal = (rule, value, callback) => {
+    if (!value) {
+      return callback()
+    }
+    let reg = /^(-)?(0|[1-9][0-9]*)(\.\d{1,2})?$/
+    let flag = reg.test(value)
+    if (!flag) {
+      callback(new Error('请输入数字且最多保留两位小数'))
+    } else {
+      callback()
+    }
+  }
+  // 验证 数字可以是正数,0, 且最多为两位小数
+  astec.positiveNum = (rule, value, callback) => {
+    if (!value) {
+      return callback()
+    }
+    let reg = /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/
+    let flag = reg.test(value)
+    if (!flag) {
+      callback(new Error('请输入大于或等于零的数字且最多保留两位小数'))
+    } else {
+      callback()
+    }
+  }
+
   // 邮箱验证
   /**
    * 异步删除一条记录
@@ -707,7 +735,7 @@ import store from '@/store'
     }
     store.state.Loading = true
     loadingInstance = Vue.prototype.$loading(options)
-    
+
   }
 
   /**
@@ -1626,7 +1654,7 @@ import store from '@/store'
   }
 
   // 浮点型计算
- 
+
     /*
      * 判断obj是否为一个整数
      */
