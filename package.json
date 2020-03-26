@@ -1,0 +1,11 @@
+{
+  "name": "yo-common",
+  "version": "1.0.35",
+  "description": "''\u001b[commonjs",
+  "main": "myplatform.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hnyotech",
+  "license": "ISC"
+}
