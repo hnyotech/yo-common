@@ -155,6 +155,29 @@ import store from '@/store'
       callback()
     }
   }
+
+    // 验证 数字或字母
+    var regContentLegth = /^[0-9a-zA-Z]{1,18}$/
+    astec.checkContent = (rule, value, callback) => {
+      let flag = regContentLegth.test(value)
+      if (!flag) {
+        callback(new Error('必须是数字或字母，请重新输入'))
+      } else {
+        callback()
+      }
+    }
+
+      // 长度验证 数字
+    var regNumLegth = /^[0-9]{8,30}$/
+    astec.checkBangAccount = (rule, value, callback) => {
+      let flag = regNumLegth.test(value)
+      if (!flag) {
+        callback(new Error('限制8到30位数字，请重新输入'))
+      } else {
+        callback()
+      }
+    }
+
   // 验证数字，两位小数
   var regNumber = /^\d+(\.\d{0,2})?$/
   astec.checkNumber = (rule, value, callback) => {
