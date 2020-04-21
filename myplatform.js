@@ -155,6 +155,17 @@ import store from '@/store'
       callback()
     }
   }
+  astec.notRequired18 = (rule, value, callback) => {
+    if (!value) {
+      return callback()
+    }
+    let flag = regLegth.test(value)
+    if (!flag) {
+      callback(new Error('限制18位数字或字母，请重新输入'))
+    } else {
+      callback()
+    }
+  }
 
     // 验证 数字或字母
     var regContentLegth = /^[0-9a-zA-Z]{1,18}$/
