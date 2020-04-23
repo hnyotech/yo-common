@@ -844,7 +844,7 @@ import store from '@/store'
 
   // 把 null 转换成 空 ""
   astec.transNull = function (val) {
-    if (val === null) {
+    if (val === null || val === undefined) {
       return ''
     } else {
       return val
