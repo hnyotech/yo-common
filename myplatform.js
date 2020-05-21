@@ -1829,12 +1829,12 @@ import store from '@/store'
         return undoNumber(money)
     }
 
-    // exports
-    // return {
-    //     add: add,
-    //     subtract: subtract,
-    //     multiply: multiply,
-    //     divide: divide
-    // }
+    astec.bankNumber = (num) => {
+        if(num === undefined || num === null || typeof num !== 'string' || typeof num !== 'number'){
+            return ''
+        }else {
+            return num.replace(/(.{4})/g, "$1 ")
+        }
+    }
 
 }))
