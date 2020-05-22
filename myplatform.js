@@ -1830,7 +1830,9 @@ import store from '@/store'
     }
 
     astec.bankNumber = (num) => {
-        if(num === undefined || num === null || typeof num !== 'string' || typeof num !== 'number'){
+        
+        // if(num === undefined || num === null || typeof num !== 'string' || typeof num !== 'number'){
+        if(astec.isNullOrWhiteSpace(num)){
             return ''
         }else {
             return num.replace(/(.{4})/g, "$1 ")
