@@ -90,7 +90,7 @@ import store from '@/store'
         return obj
     }
     // 表单验证手机号
-    var regMobile = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+    var regMobile = /^1([123456789][0-9])\d{8}$/
     astec.checkMoble = (rule, value, callback) => {
         if (!value) {
             return callback(new Error('手机号不能为空，请输入'))
