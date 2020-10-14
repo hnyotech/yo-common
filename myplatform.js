@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import store from '@/store'
-import {diff} from './htmldiff'
+import {diff} from 'htmldiff'
 
 (function (factory) {
     if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
