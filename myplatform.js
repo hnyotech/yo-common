@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import store from '@/store'
+import {diff} from './htmldiff'
 
 (function (factory) {
     if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
-        var target = module['exports'] || exports
+        let target = module['exports'] || exports
         factory(target)
     } else {
         factory(window['astec'] = {})
@@ -11,23 +12,23 @@ import store from '@/store'
 }(function (utExports) {
     'use strict'
 
-    var astec = typeof utExports !== 'undefined' ? utExports : {}
+    let astec = typeof utExports !== 'undefined' ? utExports : {}
 
-    var odataRequestUrl = '/api/crmdata/'
+    let odataRequestUrl = '/api/crmdata/'
 
     astec.getLable = function (vm, label, value) {
         if (!astec.isNullOrWhiteSpace(value)) {
         }
         return '123'
     }
-    var dateT = Date
+    let dateT = Date
     dateT.prototype.getZoneTime = function (isDateTime) {
-        var a
-        var defaultTimeZone = a || -8
-        var date = new Date(this)
-        var d = new Date()
-        var realTimeZoneOffset = defaultTimeZone - d.getTimezoneOffset() / 60
-        var timeWithTimezone = new Date(date.getTime() + realTimeZoneOffset * 3600000)
+        let a
+        let defaultTimeZone = a || -8
+        let date = new Date(this)
+        let d = new Date()
+        let realTimeZoneOffset = defaultTimeZone - d.getTimezoneOffset() / 60
+        let timeWithTimezone = new Date(date.getTime() + realTimeZoneOffset * 3600000)
         if (isDateTime) {
             return astec.formatDateTime(timeWithTimezone, 'yyyy-mm-dd HH:MM:ss')
         }
@@ -35,12 +36,12 @@ import store from '@/store'
     }
 
     dateT.prototype.getSystemTime = function (isDateTime) {
-        var a
-        var defaultTimeZone = a || -8
-        var date = new Date(this)
-        var d = new Date().getTimezoneOffset()
-        var realTimeZoneOffset = d / 60 - defaultTimeZone
-        var timeWithTimezone = null
+        let a
+        let defaultTimeZone = a || -8
+        let date = new Date(this)
+        let d = new Date().getTimezoneOffset()
+        let realTimeZoneOffset = d / 60 - defaultTimeZone
+        let timeWithTimezone = null
         if (isDateTime) {
             timeWithTimezone = new Date(date.getTime() + realTimeZoneOffset * 3600000)
             return astec.formatDateTime(timeWithTimezone, 'yyyy-mm-dd HH:MM:ss')
@@ -77,10 +78,10 @@ import store from '@/store'
      * 数据深拷贝
      */
     astec.deepCopy = function (arr) {
-        // var obj=arr.constructor==Array?[]:{};
-        // 第二种方法 var obj=arr instanceof Array?[]:{}
-        var obj = Array.isArray(arr) ? [] : {}// 第三种方法
-        for (var item in arr) {
+        // let obj=arr.constructor==Array?[]:{};
+        // 第二种方法 let obj=arr instanceof Array?[]:{}
+        let obj = Array.isArray(arr) ? [] : {}// 第三种方法
+        for (let item in arr) {
             if (typeof arr[item] === 'object' && arr[item] !== null) {
                 obj[item] = astec.deepCopy(arr[item])
             } else {
@@ -90,7 +91,7 @@ import store from '@/store'
         return obj
     }
     // 表单验证手机号
-    var regMobile = /^1([123456789][0-9])\d{8}$/
+    let regMobile = /^1([123456789][0-9])\d{8}$/
     astec.checkMoble = (rule, value, callback) => {
         if (!value) {
             return callback(new Error('手机号不能为空，请输入'))
@@ -125,8 +126,8 @@ import store from '@/store'
             }
         }, 500)
     }
-    // var regEmail = /^([a-zA-Z]|[0-9])(\w|\.-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
-    var regEmail = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
+    // let regEmail = /^([a-zA-Z]|[0-9])(\w|\.-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+    let regEmail = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/
     astec.checkEmail = (rule, value, callback) => {
         let flag = regEmail.test(value)
         if (!flag) {
@@ -147,7 +148,7 @@ import store from '@/store'
         }
     }
     // 长度验证 数字或字母
-    var regLegth = /^[0-9a-zA-Z]{18}$/
+    let regLegth = /^[0-9a-zA-Z]{18}$/
     astec.checkLength = (rule, value, callback) => {
         let flag = regLegth.test(value)
         if (!flag) {
@@ -169,7 +170,7 @@ import store from '@/store'
     }
 
     // 验证 数字或字母
-    var regContentLegth = /^[0-9a-zA-Z]{1,18}$/
+    let regContentLegth = /^[0-9a-zA-Z]{1,18}$/
     astec.checkContent = (rule, value, callback) => {
         let flag = regContentLegth.test(value)
         if (!flag) {
@@ -180,7 +181,7 @@ import store from '@/store'
     }
 
     // 长度验证 数字
-    var regNumLegth = /^[0-9]{8,30}$/
+    let regNumLegth = /^[0-9]{8,30}$/
     astec.checkBangAccount = (rule, value, callback) => {
         let flag = regNumLegth.test(value)
         if (!flag) {
@@ -191,7 +192,7 @@ import store from '@/store'
     }
 
     // 验证数字，两位小数
-    var regNumber = /^\d+(\.\d{0,2})?$/
+    let regNumber = /^\d+(\.\d{0,2})?$/
     astec.checkNumber = (rule, value, callback) => {
         let flag = regNumber.test(value)
         if (!flag) {
@@ -206,7 +207,7 @@ import store from '@/store'
         }
     }
     // 验证数字小数长度为4位
-    var regNumber6 = /^\d+(\.\d{0,6})?$/
+    let regNumber6 = /^\d+(\.\d{0,6})?$/
     astec.checkNumber6 = (rule, value, callback) => {
         let flag = regNumber6.test(value)
         if (!flag) {
@@ -239,8 +240,8 @@ import store from '@/store'
     }
     // 验证正整数
     // /^(0+)|[^\d]+/g 正整数以外的符号
-    // var regNumberNonNegative=/^\d+$/ 非负整数
-    var regNumberNonNegative = /^[1-9]\d*$/
+    // let regNumberNonNegative=/^\d+$/ 非负整数
+    let regNumberNonNegative = /^[1-9]\d*$/
     astec.checkNumberD = (rule, value, callback) => {
         if (!value) {
             return callback()
@@ -253,7 +254,7 @@ import store from '@/store'
         }
     }
     // 验证是否数字
-    var regIsNumber = /^[0-9]*$/
+    let regIsNumber = /^[0-9]*$/
     astec.checkIsNumber = (rule, value, callback) => {
         if (!value) {
             return callback()
@@ -333,7 +334,7 @@ import store from '@/store'
             if (!astec.isBoolean(useFormattedValue)) {
                 throw new Error('astec.retrieveMultiple useFormattedValue parameter must be a boolean.')
             }
-            var url = odataRequestUrl + 'Retrieve/' + queryString
+            let url = odataRequestUrl + 'Retrieve/' + queryString
 
             // 添加头部
             let config = {}
@@ -368,7 +369,7 @@ import store from '@/store'
             if (!astec.isBoolean(useFormattedValue)) {
                 throw new Error('astec.retrieveMultiple useFormattedValue parameter must be a boolean.')
             }
-            var url = odataRequestUrl + 'Retrieve/' + queryString
+            let url = odataRequestUrl + 'Retrieve/' + queryString
 
             // 添加头部
             let config = {}
@@ -408,7 +409,7 @@ import store from '@/store'
             if (astec.isNullOrWhiteSpace(fetchXml)) {
                 throw new Error('astec.fetchAsync fetchXml parameter must be valuable.')
             }
-            var fetchStr = odataRequestUrl + 'Retrieve/' + entityName + '?fetchXml=' + fetchXml
+            let fetchStr = odataRequestUrl + 'Retrieve/' + entityName + '?fetchXml=' + fetchXml
             if (useFormattedValue) {
 
             }
@@ -441,7 +442,7 @@ import store from '@/store'
                 throw new Error('astec.updateAsync entity parameter must not be null or undefined.')
             }
 
-            var url = odataRequestUrl + 'Update/' + entitySetName + '(' + entityId.replace('{', '').replace('}', '') + ')'
+            let url = odataRequestUrl + 'Update/' + entitySetName + '(' + entityId.replace('{', '').replace('}', '') + ')'
             astec.post(url, entity)
                 .then(function (res) {
                     resolve(res.headers['odata-entityid'].split('(')[1].replace(')', ''))
@@ -497,7 +498,7 @@ import store from '@/store'
                 throw new Error('astec.getFieldValueAsync typeName parameter must be string.')
             }
 
-            var queryString = odataRequestUrl + 'Retrieve/' + typeName + '(' + id.replace('{', '').replace('{', '') + ')'
+            let queryString = odataRequestUrl + 'Retrieve/' + typeName + '(' + id.replace('{', '').replace('{', '') + ')'
             if (!astec.isNullOrWhiteSpace(returnField) && returnField !== '*') {
                 queryString += '?$select=' + returnField
             }
@@ -518,7 +519,7 @@ import store from '@/store'
      * @return {string}           系统参数的值
      */
     astec.getParameterValue = function (paramName) {
-        var fetchXml = "<fetch mapping='logical' version='1.0'>" +
+        let fetchXml = "<fetch mapping='logical' version='1.0'>" +
             "<entity name='systemparameter'>" +
             "<attribute name='value' />" +
             '<filter>' +
@@ -539,32 +540,32 @@ import store from '@/store'
      * @param {string} exclude 排除的字段集合
      */
     astec.export2Excel = function (filename, val, excelTitle, exclude) {
-        var excludelist = []
+        let excludelist = []
 
         if (exclude) {
             excludelist = exclude.split(',')
         }
-        var explorer = '' // 浏览器类型
+        let explorer = '' // 浏览器类型
         if (!!window.ActiveXObject || 'ActiveXObject' in window) {
             explorer = 'ie'
         }
         // IE浏览器导出
         if (explorer === 'ie') {
-            var arrData = typeof val !== 'object' ? JSON.parse(val) : val
+            let arrData = typeof val !== 'object' ? JSON.parse(val) : val
             try {
-                var oXL = new ActiveXObject('Excel.Application')// 创建AX对象excel
+                let oXL = new ActiveXObject('Excel.Application')// 创建AX对象excel
             } catch (e) {
                 alert('无法启动Excel，请确保电脑中已经安装了Excel!\n\n如果已经安装了Excel，" + "请调整IE的安全级别。\n\n具体操作：\n\n" + "工具 → Internet选项 → 安全 → 自定义级别 → ActiveX 控件和插件 → 对未标记为可安全执行脚本的ActiveX 控件初始化并执行脚本 → 启用 → 确定')
             }
-            var oWB = oXL.Workbooks.Add() // 获取workbook对象
-            var oSheet = oWB.ActiveSheet // 激活当前sheet
-            var Lenr = arrData.length // 取得表格行数
-            for (var i = 0; i < excelTitle.length; i++) {
+            let oWB = oXL.Workbooks.Add() // 获取workbook对象
+            let oSheet = oWB.ActiveSheet // 激活当前sheet
+            let Lenr = arrData.length // 取得表格行数
+            for (let i = 0; i < excelTitle.length; i++) {
                 oSheet.Cells(1, i + 1).value = excelTitle[i] // 赋值
             }
             for (let i = 0; i < Lenr; i++) {
-                var td = 0
-                for (var j in arrData[i]) {
+                let td = 0
+                for (let j in arrData[i]) {
                     if (excludelist.length > 0 && excludelist.indexOf(j) >= 0) continue
                     oSheet.Cells(i + 2, td + 1).value = arrData[i][j] // 赋值
                     td++
@@ -572,15 +573,15 @@ import store from '@/store'
             }
             oXL.Visible = true
 
-            var fname = oXL.Application.GetSaveAsFilename(filename + '.xls', 'Excel Spreadsheets (*.xls), *.xls')
+            let fname = oXL.Application.GetSaveAsFilename(filename + '.xls', 'Excel Spreadsheets (*.xls), *.xls')
             oWB.SaveAs(fname)
             oWB.Close()
             oXL.Quit()
         } else {
             // 非IE浏览器导出
             arrData = typeof val !== 'object' ? JSON.parse(val) : val
-            var excel = '<table>'
-            var row = '<tr>'
+            let excel = '<table>'
+            let row = '<tr>'
             for (let i = 0; i < excelTitle.length; i++) {
                 row += '<td>' + excelTitle[i] + '</td>'
             }
@@ -595,7 +596,7 @@ import store from '@/store'
                 excel += row + '</tr>'
             }
             excel += '</table>'
-            var excelFile = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+            let excelFile = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
                 "xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'>"
             excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">'
             excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel'
@@ -622,8 +623,8 @@ import store from '@/store'
             excelFile += excel
             excelFile += '</body>'
             excelFile += '</html>'
-            var uri = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(excelFile)
-            var link = document.createElement('a')
+            let uri = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(excelFile)
+            let link = document.createElement('a')
             link.href = uri
             link.style = 'visibility:hidden'
             // 导出文件名
@@ -639,7 +640,7 @@ import store from '@/store'
      * @param {string} 实体id
      */
     astec.revoke = function (entityname, entityid) {
-        var data = {
+        let data = {
             EntityId: entityid,
             EntityTypeName: entityname
         }
@@ -661,7 +662,7 @@ import store from '@/store'
             return ''
         }
 
-        var baseUrl = localStorage.serverAddress
+        let baseUrl = localStorage.serverAddress
         if (!baseUrl.endWith('/')) {
             baseUrl += '/'
         }
@@ -669,15 +670,15 @@ import store from '@/store'
         return baseUrl
     }
 
-    var loadingInstance // loading实例
+    let loadingInstance // loading实例
     /**
      * 打开lookup
      * @param {string} url lookuppage url
      */
 
     astec.sLookup = function (url) {
-        var l = (screen.availWidth - 560) / 2
-        var t = (screen.availHeight - 614) / 2
+        let l = (screen.availWidth - 560) / 2
+        let t = (screen.availHeight - 614) / 2
 
         window.open(url, '_blank', 'width=560,height=614,top=' + t + ',left=' + l + ',toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no')
     }
@@ -688,8 +689,8 @@ import store from '@/store'
      */
 
     astec.editWindow = function (url) {
-        var l = (screen.availWidth - 1440) / 2
-        var t = (screen.availHeight - 900) / 2
+        let l = (screen.availWidth - 1440) / 2
+        let t = (screen.availHeight - 900) / 2
 
         window.open(url, '_blank', 'width=1440,height=900,top=' + t + ',left=' + l + ',toolbar=no,menubar=no, scrollbars=no, resizable=no, location=no, status=no')
     }
@@ -894,8 +895,8 @@ import store from '@/store'
     astec.showFullWindow = function (url) {
         // <summary>打开新窗口，窗口大小为全屏</summary>
         // <param name="url" type="String">页面URL地址</param>
-        var width = screen.width
-        var height = screen.height
+        let width = screen.width
+        let height = screen.height
         return this.showWindow(url, {
             width: width,
             height: height
@@ -936,11 +937,11 @@ import store from '@/store'
             config.height = 600
         }
 
-        var WINDOWS_TASK_BAR_HEIGHT = 40 // 任务栏的高度
-        var winTop = Math.round((screen.height - config.height - WINDOWS_TASK_BAR_HEIGHT) * 0.5)
-        var winLeft = Math.round((screen.width - config.width) * 0.5)
+        let WINDOWS_TASK_BAR_HEIGHT = 40 // 任务栏的高度
+        let winTop = Math.round((screen.height - config.height - WINDOWS_TASK_BAR_HEIGHT) * 0.5)
+        let winLeft = Math.round((screen.width - config.width) * 0.5)
 
-        var strFeatures = 'help=no,maximize=no,minimize=no,menubar=no,toolbar=no,status=no,location=no,resizable=no' + ',width=' + config.width + ',height=' + config.height + ',top=' + winTop + ',left=' + winLeft
+        let strFeatures = 'help=no,maximize=no,minimize=no,menubar=no,toolbar=no,status=no,location=no,resizable=no' + ',width=' + config.width + ',height=' + config.height + ',top=' + winTop + ',left=' + winLeft
 
         window.open(url, '_blank', strFeatures)
     }
@@ -958,7 +959,7 @@ import store from '@/store'
      * @param ignoreCase 是否忽略大小写
      * @returns {boolean} 如果包含，则返回true，否则返回 false
      */
-    var stringT = String
+    let stringT = String
     stringT.prototype.contains = function (substr, ignoreCase) {
         if (ignoreCase === null || ignoreCase === undefined) {
             ignoreCase = false
@@ -980,7 +981,7 @@ import store from '@/store'
         if (s === null || s === '' || this.length === 0 || s.length > this.length) {
             return false
         }
-        var ns = this.substring(this.length - s.length)
+        let ns = this.substring(this.length - s.length)
         if (ignoreCase) {
             return ns.toLowerCase() === s.toLowerCase()
         } else {
@@ -992,9 +993,9 @@ import store from '@/store'
      * 字符格式化，同C# String.Format方法
      */
     stringT.prototype.format = function () {
-        var content = this
-        for (var i = 0; i < arguments.length; i++) {
-            var replacement = '{' + i + '}'
+        let content = this
+        for (let i = 0; i < arguments.length; i++) {
+            let replacement = '{' + i + '}'
             content = content.replace(replacement, arguments[i])
         }
         return content
@@ -1009,7 +1010,7 @@ import store from '@/store'
         if (s === null || s === '' || this.length === 0 || s.length > this.length) {
             return false
         }
-        var ns = this.substr(0, s.length)
+        let ns = this.substr(0, s.length)
         if (ignoreCase) {
             return ns.toLowerCase() === s.toLowerCase()
         } else {
@@ -1021,13 +1022,13 @@ import store from '@/store'
      * 移除字符串前后的空格或其它特殊字符，同C#中的Trim方法。
      */
     stringT.prototype.trim = function (trimChars) {
-        var result = this
+        let result = this
 
         if (typeof trimChars !== 'string' || trimChars.length <= 0) {
             trimChars = ' '
         }
 
-        var count = result.length
+        let count = result.length
 
         while (count > 0) { // trim the head position
             if (trimChars.indexOf(result[0]) >= 0) {
@@ -1055,7 +1056,7 @@ import store from '@/store'
      * @return {[type]}           [description]
      */
     astec.convertGPS2BaiduLocation = function (longitude, latitude, success) {
-        var url = 'http://api.map.baidu.com/geoconv/v1/?coords=' + longitude + ',' + latitude + '&from=1&to=5&ak=ROninBdEIu93CBGDHc3fSPHE&callback=MYCALLBACK'
+        let url = 'http://api.map.baidu.com/geoconv/v1/?coords=' + longitude + ',' + latitude + '&from=1&to=5&ak=ROninBdEIu93CBGDHc3fSPHE&callback=MYCALLBACK'
 
         this.jsonp(url, function (data) {
             success(data.result[0])
@@ -1085,7 +1086,7 @@ import store from '@/store'
      * @return {object}           [description]
      */
     astec.getObject = function (serverUrl) {
-        var json = this.getJSON(serverUrl)
+        let json = this.getJSON(serverUrl)
         try {
             return JSON.parse(json)
         } catch (e) {
@@ -1123,7 +1124,7 @@ import store from '@/store'
      * @returns {boolean}
      */
     astec.isCellphone = function (str) {
-        var regex = /^0*(13|15|18)\d{9}$/
+        let regex = /^0*(13|15|18)\d{9}$/
         return regex.test(str)
     }
 
@@ -1144,7 +1145,7 @@ import store from '@/store'
      * 检查是否是邮件地址
      */
     astec.isEmailAddress = function (str) {
-        var regex = /^\w+((-\w+)|(\.\w+))*\.@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/
+        let regex = /^\w+((-\w+)|(\.\w+))*\.@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/
 
         return regex.test(str)
     }
@@ -1167,7 +1168,7 @@ import store from '@/store'
      * @returns {boolean}
      */
     astec.isIDCard = function (str) {
-        var regex = /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/
+        let regex = /^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/
         return regex.test(str)
     }
 
@@ -1177,7 +1178,7 @@ import store from '@/store'
      * @return {Boolean}            若为整数，返回TRUE；否则，返回false
      */
     astec.isInteger = function (str) {
-        var regex = /^[-]{0,1}[0-9]{1,}$/
+        let regex = /^[-]{0,1}[0-9]{1,}$/
         return regex.test(str)
     }
 
@@ -1205,7 +1206,7 @@ import store from '@/store'
      * @return {Boolean}           若为数字，返回true；否则返回false
      */
     astec.isNumeric = function (str) {
-        var regex = /^(-|\+)?\d+(\.\d+)?$/
+        let regex = /^(-|\+)?\d+(\.\d+)?$/
 
         return regex.test(str)
     }
@@ -1224,7 +1225,7 @@ import store from '@/store'
      * @return {Boolean}
      */
     astec.isSameGuid = function (guid1, guid2) {
-        var isEqual
+        let isEqual
         if (guid1 === null || guid2 === null) {
             isEqual = false
         } else {
@@ -1252,7 +1253,7 @@ import store from '@/store'
      * @returns {boolean}
      */
     astec.isTelephone = function (str) {
-        var reg = /^\d{3,4}-\d{7,8}(-\d{3,4})?$/
+        let reg = /^\d{3,4}-\d{7,8}(-\d{3,4})?$/
         return reg.test(str)
     }
 
@@ -1262,7 +1263,7 @@ import store from '@/store'
      * @return {Boolean}            若为正整数，返回TRUE；否则，返回false
      */
     astec.isUnsignedInteger = function (str) {
-        var regex = /^[1]{0,1}[0-9]{1,}$/
+        let regex = /^[1]{0,1}[0-9]{1,}$/
 
         return regex.test(str)
     }
@@ -1273,10 +1274,10 @@ import store from '@/store'
      * @param  {Number}  count 需要精确到的小数位数
      * @param  {String}  integer 取整数的方法
      */
-    var numberT = Number
+    let numberT = Number
     // 加法
     numberT.prototype.add = function (arg, count, integer) {
-        var r1, r2, m
+        let r1, r2, m
         try {
             r1 = this.toString().split('.')[1].length
         } catch (e) {
@@ -1288,7 +1289,7 @@ import store from '@/store'
             r2 = 0
         }
         m = Math.pow(10, Math.max(r1, r2))
-        var finValue = (this * m + arg * m) / m
+        let finValue = (this * m + arg * m) / m
         if (count) {
             return finValue.toFixed(count)
         } else {
@@ -1310,9 +1311,9 @@ import store from '@/store'
     }
     // 乘法
     numberT.prototype.mul = function (arg, count, integer) {
-        var m = 0
-        var s1 = this.toString()
-        var s2 = arg.toString()
+        let m = 0
+        let s1 = this.toString()
+        let s2 = arg.toString()
         try {
             m += s1.split('.')[1].length
         } catch (e) {
@@ -1321,7 +1322,7 @@ import store from '@/store'
             m += s2.split('.')[1].length
         } catch (e) {
         }
-        var finValue = Number(s1.replace('.', '')) * Number(s2.replace('.', '')) / Math.pow(10, m)
+        let finValue = Number(s1.replace('.', '')) * Number(s2.replace('.', '')) / Math.pow(10, m)
         if (count) {
             return finValue.toFixed(count)
         } else {
@@ -1339,9 +1340,9 @@ import store from '@/store'
     }
     // 除法
     numberT.prototype.div = function (arg, count, integer) {
-        var t1 = 0
-        var t2 = 0
-        var r1, r2
+        let t1 = 0
+        let t2 = 0
+        let r1, r2
         try {
             t1 = this.toString().split('.')[1].length
         } catch (e) {
@@ -1352,7 +1353,7 @@ import store from '@/store'
         }
         r1 = Number(this.toString().replace('.', ''))
         r2 = Number(arg.toString().replace('.', ''))
-        // var finValue = (r1 / r2) * Math.pow(10, t2 - t1)
+        // let finValue = (r1 / r2) * Math.pow(10, t2 - t1)
         if (count) {
             return ((r1 / r2) * Math.pow(10, t2 - t1)).toFixed(count)
         } else {
@@ -1374,7 +1375,7 @@ import store from '@/store'
      * @return {Boolean}           若为正数，返回TRUE；否则返回false
      */
     astec.isUnsignedNumeric = function (str) {
-        var regex = /^\d+(\.\d+)?$/
+        let regex = /^\d+(\.\d+)?$/
 
         return regex.test(str)
     }
@@ -1390,7 +1391,7 @@ import store from '@/store'
      * @return {object}            返回的对象
      */
     astec.jsonp = function (url, callback) {
-        var callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random())
+        let callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random())
         window[callbackName] = function (data) {
             delete window[callbackName]
             document
@@ -1399,7 +1400,7 @@ import store from '@/store'
             callback(data)
         }
 
-        var script = document.createElement('script')
+        let script = document.createElement('script')
         script.src = url + (url.indexOf('?') >= 0
             ? '&'
             : '?') + 'callback=' + callbackName
@@ -1436,7 +1437,7 @@ import store from '@/store'
      * @return {[type]}           [description]
      */
     astec.postResponse = function (url, data) {
-        var xmlhttp = this.getXHR()
+        let xmlhttp = this.getXHR()
         xmlhttp.open('post', url, false)
         xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
         xmlhttp.send(data)
@@ -1449,10 +1450,10 @@ import store from '@/store'
      */
     astec.printHTML = function (ele, zoom) {
         // 获取当前页的html代码
-        var bdhtml = window.document.body.innerHTML
-        var printHtml = document.getElementById(ele).innerHTML
+        let bdhtml = window.document.body.innerHTML
+        let printHtml = document.getElementById(ele).innerHTML
         // 页面打印缩放比例设置
-        var zoomIn = 0.47
+        let zoomIn = 0.47
         if (zoom) {
             zoomIn = zoom
         }
@@ -1471,10 +1472,10 @@ import store from '@/store'
 
     // 去掉页眉、页脚
     function removeIeHeaderAndFooter() {
-        var hkeyPath
+        let hkeyPath
         hkeyPath = 'HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\PageSetup\\'
         try {
-            var RegWsh = new ActiveXObject('WScript.Shell')
+            let RegWsh = new ActiveXObject('WScript.Shell')
             RegWsh.RegWrite(hkeyPath + 'header', '')
             RegWsh.RegWrite(hkeyPath + 'footer', '')
         } catch (e) {
@@ -1490,12 +1491,12 @@ import store from '@/store'
      */
 
     /*
-     * Configurable variables. You may need to tweak these to be compatible with
+     * Configurable letiables. You may need to tweak these to be compatible with
      * the server-side, but the defaults work in most cases.
      */
-    var hexcase = 0
+    let hexcase = 0
     /* hex output format. 0 - lowercase; 1 - uppercase        */
-    var chrsz = 8
+    let chrsz = 8
     /* bits per input character. 8 - ASCII; 16 - Unicode      */
 
     /*
@@ -1526,16 +1527,16 @@ import store from '@/store'
         x[len >> 5] |= 0x80 << ((len) % 32)
         x[(((len + 64) >>> 9) << 4) + 14] = len
 
-        var a = 1732584193
-        var b = -271733879
-        var c = -1732584194
-        var d = 271733878
+        let a = 1732584193
+        let b = -271733879
+        let c = -1732584194
+        let d = 271733878
 
-        for (var i = 0; i < x.length; i += 16) {
-            var olda = a
-            var oldb = b
-            var oldc = c
-            var oldd = d
+        for (let i = 0; i < x.length; i += 16) {
+            let olda = a
+            let oldb = b
+            let oldc = c
+            let oldd = d
 
             a = md5Ff(a, b, c, d, x[i + 0], 7, -680876936)
             d = md5Ff(d, a, b, c, x[i + 1], 12, -389564586)
@@ -1640,17 +1641,17 @@ import store from '@/store'
      * Calculate the HMAC-MD5, of a key and some data
      */
     function coreHmacMd5(key, data) {
-        var bkey = str2binl(key)
+        let bkey = str2binl(key)
         if (bkey.length > 16) bkey = coreMd5(bkey, key.length * chrsz)
 
-        var ipad = Array(16)
-        var opad = Array(16)
-        for (var i = 0; i < 16; i++) {
+        let ipad = Array(16)
+        let opad = Array(16)
+        for (let i = 0; i < 16; i++) {
             ipad[i] = bkey[i] ^ 0x36363636
             opad[i] = bkey[i] ^ 0x5C5C5C5C
         }
 
-        var hash = coreMd5(ipad.concat(str2binl(data)), 512 + data.length * chrsz)
+        let hash = coreMd5(ipad.concat(str2binl(data)), 512 + data.length * chrsz)
         return coreMd5(opad.concat(hash), 512 + 128)
     }
 
@@ -1659,8 +1660,8 @@ import store from '@/store'
      * to work around bugs in some JS interpreters.
      */
     function safeAdd(x, y) {
-        var lsw = (x & 0xFFFF) + (y & 0xFFFF)
-        var msw = (x >> 16) + (y >> 16) + (lsw >> 16)
+        let lsw = (x & 0xFFFF) + (y & 0xFFFF)
+        let msw = (x >> 16) + (y >> 16) + (lsw >> 16)
         return (msw << 16) | (lsw & 0xFFFF)
     }
 
@@ -1676,9 +1677,9 @@ import store from '@/store'
      * If chrsz is ASCII, characters >255 have their hi-byte silently ignored.
      */
     function str2binl(str) {
-        var bin = []
-        var mask = (1 << chrsz) - 1
-        for (var i = 0; i < str.length * chrsz; i += chrsz) {
+        let bin = []
+        let mask = (1 << chrsz) - 1
+        for (let i = 0; i < str.length * chrsz; i += chrsz) {
             bin[i >> 5] |= (str.charCodeAt(i / chrsz) & mask) << (i % 32)
         }
         return bin
@@ -1688,9 +1689,9 @@ import store from '@/store'
      * Convert an array of little-endian words to a hex string.
      */
     function binl2hex(binarray) {
-        var hexTab = hexcase ? '0123456789ABCDEF' : '0123456789abcdef'
-        var str = ''
-        for (var i = 0; i < binarray.length * 4; i++) {
+        let hexTab = hexcase ? '0123456789ABCDEF' : '0123456789abcdef'
+        let str = ''
+        for (let i = 0; i < binarray.length * 4; i++) {
             str += hexTab.charAt((binarray[i >> 2] >> ((i % 4) * 8 + 4)) & 0xF) +
                 hexTab.charAt((binarray[i >> 2] >> ((i % 4) * 8)) & 0xF)
         }
@@ -1713,16 +1714,16 @@ import store from '@/store'
      *   {times:100, num: 314}
      */
     function toInteger(floatNum) {
-        var ret = {times: 1, num: 0};
+        let ret = {times: 1, num: 0};
         if (isInteger(floatNum)) {
             ret.num = floatNum;
             return ret
         }
-        var strfi = floatNum + '';
-        var dotPos = strfi.indexOf('.');
-        var len = strfi.substr(dotPos + 1).length;
-        var times = Math.pow(10, len);
-        var intNum = parseInt(floatNum * times + 0.5, 10);
+        let strfi = floatNum + '';
+        let dotPos = strfi.indexOf('.');
+        let len = strfi.substr(dotPos + 1).length;
+        let times = Math.pow(10, len);
+        let intNum = parseInt(floatNum * times + 0.5, 10);
         ret.times = times;
         ret.num = intNum;
         return ret
@@ -1738,14 +1739,14 @@ import store from '@/store'
      *
      */
     function operation(a, b, op) {
-        var o1 = toInteger(a);
-        var o2 = toInteger(b);
-        var n1 = o1.num;
-        var n2 = o2.num;
-        var t1 = o1.times;
-        var t2 = o2.times;
-        var max = t1 > t2 ? t1 : t2;
-        var result = null;
+        let o1 = toInteger(a);
+        let o2 = toInteger(b);
+        let n1 = o1.num;
+        let n2 = o2.num;
+        let t1 = o1.times;
+        let t2 = o2.times;
+        let max = t1 > t2 ? t1 : t2;
+        let result = null;
         switch (op) {
             case 'add':
                 if (t1 === t2) { // 两个小数位数相同
@@ -1830,11 +1831,15 @@ import store from '@/store'
     }
 
     astec.bankNumber = (num) => {
-        if(astec.isNullOrWhiteSpace(num)){
+        if (astec.isNullOrWhiteSpace(num)) {
             return ''
-        }else {
+        } else {
             return num.toString().replace(/(.{4})/g, "$1 ")
         }
+    }
+
+    astec.getHTMLDiff = function (oldHtml, newHtml) {
+        return diff.getHTMLDiff(oldHtml, newHtml)
     }
 
 }))
