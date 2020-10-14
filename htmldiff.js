@@ -1,6 +1,6 @@
 let diff
 // (function () {
-diff = self;
+// diff = self;
 /**
  * 匹配描述块，一个用来表示相同内容块在新旧文档内位置的描述对象
  * @param {Number} startInOld [相同部分在旧文档中的起始位置]
@@ -306,7 +306,10 @@ function stringNull(str) {
 }
 
 diff.getHTMLDiff = function (oldVersion, newVersion) {
-    return new DiffBuilder(stringNull(oldVersion), stringNull(newVersion)).build();
+    if (stringNull(oldVersion) === '' && stringNull(newVersion) === '') {
+    } else {
+        return new DiffBuilder(stringNull(oldVersion), stringNull(newVersion)).build();
+    }
 };
 
 /**
