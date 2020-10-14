@@ -1,6 +1,6 @@
 {
   "name": "yo-common",
-  "version": "1.0.46",
+  "version": "1.0.47",
   "description": "''\u001b[commonjs",
   "main": "myplatform.js",
   "scripts": {
