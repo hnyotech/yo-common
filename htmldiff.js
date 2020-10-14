@@ -1,6 +1,3 @@
-let diff
-// (function () {
-// diff = self;
 /**
  * 匹配描述块，一个用来表示相同内容块在新旧文档内位置的描述对象
  * @param {Number} startInOld [相同部分在旧文档中的起始位置]
@@ -282,7 +279,13 @@ DiffBuilder.prototype = {
     },
 
     warpText: function (text, tagName, cssCls) {
-        return '<' + tagName + ' class="' + cssCls + '">' + text + '</' + tagName + '>';
+        if (tagName === 'ins') {
+            return '<' + tagName + ' class="' + cssCls + '" style="background-color: #cfc;text-decoration: none;">' + text + '</' + tagName + '>';
+        } else if (tagName === 'del') {
+            return '<' + tagName + ' class="' + cssCls + '" style="color: #999;background-color: #FEC8C8;">' + text + '</' + tagName + '>';
+        } else {
+            return '<' + tagName + ' class="' + cssCls + '">' + text + '</' + tagName + '>';
+        }
     },
 
     isOpeningTag: function (item) {
@@ -305,26 +308,13 @@ function stringNull(str) {
     return str.toString()
 }
 
-diff.getHTMLDiff = function (oldVersion, newVersion) {
-    if (stringNull(oldVersion) === '' && stringNull(newVersion) === '') {
-    } else {
-        return new DiffBuilder(stringNull(oldVersion), stringNull(newVersion)).build();
-    }
-};
-
-/**
- * 针对高级浏览器开启webWorker支持
- */
-if (typeof Worker === "undefined") {
-} else {
-    if (typeof postMessage === "function") {
-        onmessage = function (evt) {
-            let data = evt.data;
-            let diff = getHTMLDiff(data.oldVersion, data.newVersion);
-            postMessage(diff);
-        };
+let diff = {
+    getHTMLDiff: function (oldVersion, newVersion) {
+        if (stringNull(oldVersion) === '' && stringNull(newVersion) === '') {
+            return ''
+        } else {
+            return new DiffBuilder(stringNull(oldVersion), stringNull(newVersion)).build();
+        }
     }
 }
-
-// })();
 export default diff
