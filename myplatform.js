@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import store from '@/store'
-import {diff} from '/htmldiff'
 
 (function (factory) {
     if (typeof require === 'function' && typeof exports === 'object' && typeof module === 'object') {
@@ -1838,8 +1837,5 @@ import {diff} from '/htmldiff'
         }
     }
 
-    astec.getHTMLDiff = function (oldHtml, newHtml) {
-        return diff.getHTMLDiff(oldHtml, newHtml)
-    }
 
 }))
