@@ -1123,7 +1123,7 @@ import store from '@/store'
      * @returns {boolean}
      */
     astec.isCellphone = function (str) {
-        let regex = /^0*(13|15|18)\d{9}$/
+        let regex = /^0*(13|14|15|16|17|18|19)\d{9}$/
         return regex.test(str)
     }
 
